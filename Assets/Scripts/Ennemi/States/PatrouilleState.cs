@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Check : EnnemiState
+public class PatrouilleState : EnnemiState
 {
-    public Check(Ennemi _ennemi, EnnemiStateMachine _stateMachine) : base(_ennemi, _stateMachine)
+    public PatrouilleState(Ennemi _ennemi, EnnemiStateMachine _stateMachine) : base(_ennemi, _stateMachine)
     {
-        
+
     }
 
     protected Ennemi ennemi;
@@ -23,7 +23,8 @@ public class Check : EnnemiState
     public virtual void FrameUpdate() 
     {
         base.FrameUpdate();
-        //X Temps de tournage de caméra pour regarder autour de lui puis --> ChangeState(Patrouille) 
+        //Si enemy voit joueur --> ChangeState(Chasing)
+        //S'il est sur un checkPoint --> ChangeState(Check)
     }
     public virtual void PhysicsUpdate() 
     {

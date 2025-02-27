@@ -6,20 +6,20 @@ using UnityEngine;
 public class Ennemi : MonoBehaviour
 {
    public EnnemiStateMachine stateMachine;
-   public Patrouille patrouilleState;
-   public Chasing chasingState;
-   public Investigate investigateState;
-   public Check checkState;
+   public PatrouilleState patrouilleState;
+   public ChasingState chasingState;
+   public InvestigateState investigateState;
+   public CheckState checkState;
 
    public Rigidbody rb;
 
    private void Awake()
    {
         stateMachine = new EnnemiStateMachine();
-        patrouilleState = new Patrouille(this, stateMachine);
-        chasingState = new Chasing(this, stateMachine);
-        investigateState = new Investigate(this, stateMachine);
-        checkState = new Check(this, stateMachine);
+        patrouilleState = new PatrouilleState(this, stateMachine);
+        chasingState = new ChasingState(this, stateMachine);
+        investigateState = new InvestigateState(this, stateMachine);
+        checkState = new CheckState(this, stateMachine);
    }
 
     private void Start()

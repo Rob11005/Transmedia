@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Chasing : EnnemiState
+public class InvestigateState : EnnemiState
 {
-    public Chasing(Ennemi _ennemi, EnnemiStateMachine _stateMachine) : base(_ennemi, _stateMachine)
+    public InvestigateState(Ennemi _ennemi, EnnemiStateMachine _stateMachine) : base(_ennemi, _stateMachine)
     {
         
     }
@@ -23,7 +23,9 @@ public class Chasing : EnnemiState
     public virtual void FrameUpdate() 
     {
         base.FrameUpdate();
-        //Si ne voit plus le joueur --> ChangeState(Investigate)
+        //Si ne trouve pas au bout de X temps --> ChangeState(Patrouille)
+        //Si trouve --> ChangeState(Chasing)
+        //Si sur CheckPoint ou tous les X temps (à toi de voir comment tu veux gérer ça) --> ChangeState(Check)
     }
     public virtual void PhysicsUpdate() 
     {
