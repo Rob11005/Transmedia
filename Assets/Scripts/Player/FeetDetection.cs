@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -7,17 +8,31 @@ public class FeetDetection : MonoBehaviour
 {
 
     public Player player;
+    public IsJumpingState isJumpingState;
 
-    void Update()
+    void Start()
     {
-        if(Physics.Raycast(transform.position,Vector3.down, 1f))
+        isJumpingState = player.isJumpingState;   
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+        //Debug.Log("Enter Collision");
+        if (other.gameObject.tag == "Ground")
         {
             player.IsGrounded = true;
+            isJumpingState.DoCheck();
+            Debug.Log(player.IsGrounded);
         }
-        else
+    }
+    
+    void OnCollisionExit(Collision other)
+    {
+        //Debug.Log("Exit Collision");
+        if(other.gameObject.tag == "Ground")
         {
             player.IsGrounded = false;
+            Debug.Log(player.IsGrounded);
         }
-        Debug.Log(player.IsGrounded);
-    }  
+    }
 }

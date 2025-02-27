@@ -10,4 +10,8 @@ public class PlayerValue : ScriptableObject
     public float crouchRatio = 0.5f;
     public float sprintRatio = 2;
     public float JumpHeight = 3;
+
+    public float JumpSprintForce = 4;
+
+    public float JumpWalkForce = 2;
 }
