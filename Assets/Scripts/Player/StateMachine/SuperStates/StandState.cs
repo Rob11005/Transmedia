@@ -27,6 +27,12 @@ public class StandState : PlayerState
             //Debug.Log("Jump");
             playerStateMachine.ChangeState(player.isJumpingState);
         }
+
+        if(player.chip.action.triggered && player.inChip == false)
+        {
+            playerStateMachine.ChangeState(player.chipState);
+            player.inChip = true;
+        }
     }
 
     public override void PhysicsUpdate() 

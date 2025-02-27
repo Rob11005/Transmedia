@@ -69,18 +69,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Polaroid",
+                    "name": "Jump",
                     "type": "Button",
-                    "id": "ea49f469-b203-4c70-b6f3-b641ae22ffe1",
+                    "id": "2352eaad-5502-42d4-9d2f-cb4214890c69",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Jump",
+                    "name": "Chip",
                     "type": "Button",
-                    "id": "2352eaad-5502-42d4-9d2f-cb4214890c69",
+                    "id": "2c145365-cc19-4a72-b565-622a8367fe90",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -200,17 +200,6 @@
                 },
                 {
                     "name": "",
-                    "id": "4acf6217-9719-41e4-a59a-b95288335482",
-                    "path": "<Keyboard>/r",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Polaroid",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "930653e3-b462-419a-9d4a-63fd7039ab68",
                     "path": "<Mouse>/delta/y",
                     "interactions": "",
@@ -239,6 +228,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e716a02a-8c58-432a-8056-7e0ac6879742",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Chip",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

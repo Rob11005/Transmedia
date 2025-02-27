@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 
 public class Player : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class Player : MonoBehaviour
         public SprintState sprintState { get; set; }
         public StandState standState{ get; set; }
         public IsJumpingState isJumpingState{ get; set; }
+        public ChipState chipState{ get; set;}
     #endregion
 
     #region Animation Triggers
@@ -32,12 +34,14 @@ public class Player : MonoBehaviour
     #region Components
 
     public Rigidbody rb;
+    public Volume volume;
     
 
     #endregion
 
     #region Action references
 
+    public InputActionReference chip;
     public InputActionReference move;
     public InputActionReference jump;
 
@@ -51,6 +55,7 @@ public class Player : MonoBehaviour
 
         [SerializeField]
         public bool IsGrounded;
+        public bool inChip = false;
         public float jumpForwardForce;
 
         public Vector3 jumpDirection = Vector3.zero;
@@ -65,6 +70,7 @@ public class Player : MonoBehaviour
         isJumpingState = new IsJumpingState(this, StateMachine);
         sprintState = new SprintState(this, StateMachine);
         standState = new StandState(this, StateMachine);
+        chipState = new ChipState(this, StateMachine);
         playerState = new PlayerState(this,StateMachine );
     }
 
