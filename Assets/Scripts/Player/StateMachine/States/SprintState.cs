@@ -37,6 +37,8 @@ public class SprintState : StandState
             direction = new Vector3(player.moveDirection.x,0, player.moveDirection.y);
             direction = player.transform.TransformDirection(direction);
             player.rb.MovePosition(player.transform.position + direction * player.playerValue.sprintRatio * player.playerValue.playerSpeed * Time.fixedDeltaTime);
+            player.jumpForwardForce = player.playerValue.JumpSprintForce;
+            player.jumpDirection = new Vector3(direction.x * player.jumpForwardForce,player.playerValue.JumpHeight,direction.z * player.jumpForwardForce);
         }
         else
         {

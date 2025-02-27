@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class IsJumpingState : StandState
 {
+    Vector3 direction;
+
     public IsJumpingState(Player player, PlayerStateMachine playerStateMachine) : base(player, playerStateMachine)
     {
 
@@ -13,22 +16,19 @@ public class IsJumpingState : StandState
     {
         base.EnterState();
         Debug.Log("Entering IsJumping State");
-        player.rb.AddForce(Vector3.up * player.playerValue.JumpHeight, ForceMode.Impulse);  
+        player.rb.AddForce(player.jumpDirection, ForceMode.Impulse);  
     }
 
     public override void ExitState() 
     {
         base.ExitState();
         Debug.Log("Exiting IsJumping State");
+        player.rb.velocity = Vector3.zero;
     }
 
     public override void FrameUpdate() 
     {
         base.FrameUpdate();
-        if(player.IsGrounded == true)
-        {
-            playerStateMachine.ChangeState(player.standIdleState);
-        }
     }
 
     public override void PhysicsUpdate() 
@@ -44,5 +44,9 @@ public class IsJumpingState : StandState
     public override void DoCheck() 
     {
         base.DoCheck();
+        if(player.IsGrounded == true && playerStateMachine.currentPlayerState == this)
+        {
+            playerStateMachine.ChangeState(player.standIdleState);
+        }
     }
 }

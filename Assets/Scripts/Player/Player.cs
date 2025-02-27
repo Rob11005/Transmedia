@@ -51,6 +51,9 @@ public class Player : MonoBehaviour
 
         [SerializeField]
         public bool IsGrounded;
+        public float jumpForwardForce;
+
+        public Vector3 jumpDirection = Vector3.zero;
     #endregion
 
 

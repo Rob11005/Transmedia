@@ -17,3 +17,5 @@ MonoBehaviour:
   crouchRatio: 0.5
   sprintRatio: 4
   JumpHeight: 6
+  JumpSprintForce: 16
+  JumpWalkForce: 8
