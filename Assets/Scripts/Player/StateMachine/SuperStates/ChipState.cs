@@ -48,6 +48,12 @@ public class ChipState : PlayerState
             playerStateMachine.ChangeState(player.standIdleState);
             player.inChip = false;
         }
+
+        if(player.jump.action.triggered)
+        {
+            playerStateMachine.ChangeState(player.scanState);
+            player.isScanning = true;
+        }
     }
 
     public override void PhysicsUpdate()

@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
         public StandState standState{ get; set; }
         public IsJumpingState isJumpingState{ get; set; }
         public ChipState chipState{ get; set;}
+        public ScanState scanState{get; set;}
     #endregion
 
     #region Animation Triggers
@@ -35,6 +36,8 @@ public class Player : MonoBehaviour
 
     public Rigidbody rb;
     public Volume volume;
+    public LayerMask scanLayer;
+    Color scanColor;
     
 
     #endregion
@@ -56,8 +59,9 @@ public class Player : MonoBehaviour
         [SerializeField]
         public bool IsGrounded;
         public bool inChip = false;
+        public bool isScanning = false;
         public float jumpForwardForce;
-
+        
         public Vector3 jumpDirection = Vector3.zero;
     #endregion
 
@@ -88,5 +92,26 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         StateMachine.currentPlayerState.PhysicsUpdate();
+    }
+
+    public void StartScanning()
+    {
+        StartCoroutine(Scanning());
+    }
+
+    IEnumerator Scanning()
+    {
+        Collider[] scanCollider = Physics.OverlapSphere(transform.position, 50, scanLayer);
+
+        foreach(Collider scanableObjects in scanCollider)
+        {
+            scanColor = scanableObjects.gameObject.GetComponent<MeshRenderer>().material.color;
+            scanableObjects.gameObject.GetComponent<MeshRenderer>().material.color = Color.red;
+
+            yield return new WaitForSeconds(5);
+
+            scanableObjects.gameObject.GetComponent<MeshRenderer>().material.color = scanColor;
+        }
+        isScanning = false;
     }
 }
