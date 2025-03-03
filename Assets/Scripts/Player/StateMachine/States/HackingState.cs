@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScanState : ChipState	
+public class HackingState : ChipState
 {
-    public ScanState(Player player, PlayerStateMachine playerStateMachine) : base(player, playerStateMachine)
+    public HackingState(Player player, PlayerStateMachine playerStateMachine) : base(player, playerStateMachine)
     {
 
     }
@@ -12,26 +12,16 @@ public class ScanState : ChipState
     public override void EnterState()
     {
         base.EnterState();
-        Debug.Log("Entering ScanState");
     }
 
     public override void ExitState()
     {
         base.ExitState();
-        Debug.Log("Exit ScanState");
     }
+
     public override void FrameUpdate()
     {
         base.FrameUpdate();
-
-        if(player.isScanning)
-        player.StartScanning();
-
-        if(!player.isScanning)
-        {
-            playerStateMachine.ChangeState(player.chipState);
-        }
-        
     }
 
     public override void PhysicsUpdate()

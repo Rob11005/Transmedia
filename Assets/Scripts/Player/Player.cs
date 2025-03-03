@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using Cinemachine.PostFX;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
@@ -15,7 +17,7 @@ public class Player : MonoBehaviour
         public StandState standState{ get; set; }
         public IsJumpingState isJumpingState{ get; set; }
         public ChipState chipState{ get; set;}
-        public ScanState scanState{get; set;}
+        public HackingState hackingState{get; set;}
     #endregion
 
     #region Animation Triggers
@@ -34,10 +36,11 @@ public class Player : MonoBehaviour
 
     #region Components
 
+    public GameObject cursorCanva;
     public Rigidbody rb;
-    public Volume volume;
     public LayerMask scanLayer;
-    Color scanColor;
+    public CinemachineVolumeSettings cinemachineVolume;
+    public SelectHackingObject selectHacking;
     
 
     #endregion
@@ -45,9 +48,9 @@ public class Player : MonoBehaviour
     #region Action references
 
     public InputActionReference chip;
+    public InputActionReference scan;
     public InputActionReference move;
     public InputActionReference jump;
-
     public InputActionReference sprint;
 
     #endregion 
@@ -59,9 +62,9 @@ public class Player : MonoBehaviour
         [SerializeField]
         public bool IsGrounded;
         public bool inChip = false;
-        public bool isScanning = false;
+        public bool canHack = false;
         public float jumpForwardForce;
-        
+        public GameObject ScannableObjects;
         public Vector3 jumpDirection = Vector3.zero;
     #endregion
 
@@ -75,12 +78,14 @@ public class Player : MonoBehaviour
         sprintState = new SprintState(this, StateMachine);
         standState = new StandState(this, StateMachine);
         chipState = new ChipState(this, StateMachine);
+        hackingState= new HackingState(this, StateMachine);
         playerState = new PlayerState(this,StateMachine );
     }
 
     private void Start()
     {
         StateMachine.Initialize(standIdleState);
+        selectHacking = gameObject.GetComponent<SelectHackingObject>();
     }
 
     private void Update()
@@ -92,26 +97,5 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         StateMachine.currentPlayerState.PhysicsUpdate();
-    }
-
-    public void StartScanning()
-    {
-        StartCoroutine(Scanning());
-    }
-
-    IEnumerator Scanning()
-    {
-        Collider[] scanCollider = Physics.OverlapSphere(transform.position, 50, scanLayer);
-
-        foreach(Collider scanableObjects in scanCollider)
-        {
-            scanColor = scanableObjects.gameObject.GetComponent<MeshRenderer>().material.color;
-            scanableObjects.gameObject.GetComponent<MeshRenderer>().material.color = Color.red;
-
-            yield return new WaitForSeconds(5);
-
-            scanableObjects.gameObject.GetComponent<MeshRenderer>().material.color = scanColor;
-        }
-        isScanning = false;
     }
 }

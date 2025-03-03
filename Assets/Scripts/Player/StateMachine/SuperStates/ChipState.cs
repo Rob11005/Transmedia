@@ -7,6 +7,7 @@ using UnityEngine.Rendering.Universal;
 
 public class ChipState : PlayerState
 {
+    public XrayScanner xrayScannerScript;
     public ChipState(Player player, PlayerStateMachine playerStateMachine) : base(player, playerStateMachine)
     {
         
@@ -16,44 +17,55 @@ public class ChipState : PlayerState
     {
         base.EnterState();
         Debug.Log("ChipState Enter");
-        player.volume.profile = ScriptableObject.CreateInstance<VolumeProfile>();
-        
-        if(!player.volume.profile.TryGet(out ColorAdjustments colorAdjustments))
-        {
-            colorAdjustments = player.volume.profile.Add<ColorAdjustments>(true);
-        }
 
-        colorAdjustments.colorFilter.overrideState = true;
-        colorAdjustments.colorFilter.value = Color.blue;
-        colorAdjustments.contrast.value = 60;
+        player.selectHacking.enabled = true;
+        player.cursorCanva.SetActive(true);
+
+        player.cinemachineVolume.enabled = true;
+        foreach(XrayScanner xrayScanner in player.ScannableObjects.transform.GetComponentsInChildren<XrayScanner>())
+        {
+            xrayScannerScript = xrayScanner.GetComponent<XrayScanner>();
+            xrayScanner.enabled = true;
+        }
     }
 
     public override void ExitState() 
     {
         base.ExitState();
-        if(player.volume.profile.TryGet(out ColorAdjustments colorAdjustments))
-        {
-            colorAdjustments.colorFilter.overrideState = false;
-        }
-        
         Debug.Log("ChipState Exit");
+
+        player.selectHacking.GetComponent<Outline>().enabled = false;
+        player.selectHacking.enabled = false;
+        player.cursorCanva.SetActive(false);
+
+        player.cinemachineVolume.enabled = false;
+        foreach(XrayScanner xrayScanner in player.ScannableObjects.transform.GetComponentsInChildren<XrayScanner>())
+        {
+            xrayScannerScript = xrayScanner.GetComponent<XrayScanner>();
+            xrayScanner.enabled = false;
+            xrayScannerScript.meshRenderer.material = xrayScannerScript.baseMaterial;
+            xrayScannerScript.gameObject.layer = xrayScannerScript.baseLayer;
+        }
     }
 
     public override void FrameUpdate()
     {
         base.FrameUpdate();
+        
 
+        #region ExitConditions
         if(player.chip.action.triggered && player.inChip)
         {
             playerStateMachine.ChangeState(player.standIdleState);
             player.inChip = false;
         }
 
-        if(player.jump.action.triggered)
+        if(player.move.action.IsPressed())
         {
-            playerStateMachine.ChangeState(player.scanState);
-            player.isScanning = true;
+            playerStateMachine.ChangeState(player.standIdleState);
+            player.inChip = false;
         }
+        #endregion
     }
 
     public override void PhysicsUpdate()
