@@ -30,8 +30,8 @@ public class StandState : PlayerState
 
         if(player.chip.action.triggered && player.inChip == false)
         {
-            playerStateMachine.ChangeState(player.chipState);
             player.inChip = true;
+            playerStateMachine.ChangeState(player.chipState);
         }
     }
 

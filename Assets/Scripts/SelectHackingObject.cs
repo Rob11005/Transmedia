@@ -5,12 +5,14 @@ using UnityEngine;
 public class SelectHackingObject : MonoBehaviour
 {   
     public Camera playerCamera;
-    RaycastHit hit;
-    GameObject hackedObject;
+    RaycastHit[] hits;
+    public GameObject hackedObject;
     void Update()
     {
         Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
-        if(Physics.Raycast(ray, out hit))
+        hits = Physics.RaycastAll(ray);
+
+        foreach (RaycastHit hit in hits)
         {
             if(hit.transform.gameObject.CompareTag("Hack"))
             {
@@ -19,10 +21,15 @@ public class SelectHackingObject : MonoBehaviour
             }
             else
             {
-                hackedObject.GetComponent<Outline>().enabled = false;
-                hackedObject = null;
+                if(hackedObject != null)
+                {
+                    hackedObject.GetComponent<Outline>().enabled = false;
+                    hackedObject = null;
+                }
             }
         }
+        Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 0.1f);
+
     }
 }
 

@@ -18,6 +18,8 @@ public class Player : MonoBehaviour
         public IsJumpingState isJumpingState{ get; set; }
         public ChipState chipState{ get; set;}
         public HackingState hackingState{get; set;}
+        public DoorHackingState doorHackingState {get; set;}
+
     #endregion
 
     #region Animation Triggers
@@ -52,6 +54,7 @@ public class Player : MonoBehaviour
     public InputActionReference move;
     public InputActionReference jump;
     public InputActionReference sprint;
+    public InputActionReference interact;
 
     #endregion 
 
@@ -63,6 +66,8 @@ public class Player : MonoBehaviour
         public bool IsGrounded;
         public bool inChip = false;
         public bool canHack = false;
+        public bool isHacking = false;
+        public bool gameFinished = false;
         public float jumpForwardForce;
         public GameObject ScannableObjects;
         public Vector3 jumpDirection = Vector3.zero;
@@ -80,6 +85,7 @@ public class Player : MonoBehaviour
         chipState = new ChipState(this, StateMachine);
         hackingState= new HackingState(this, StateMachine);
         playerState = new PlayerState(this,StateMachine );
+        doorHackingState = new DoorHackingState(this, StateMachine);
     }
 
     private void Start()
@@ -92,6 +98,14 @@ public class Player : MonoBehaviour
     {
         StateMachine.currentPlayerState.FrameUpdate();
         //Debug.Log(move.action.ReadValue<Vector2>());
+        if(canHack == true)
+        {
+            cursorCanva.transform.GetChild(1).gameObject.SetActive(true);
+        }
+        else
+        {
+            cursorCanva.transform.GetChild(1).gameObject.SetActive(false);
+        }
     }
 
     private void FixedUpdate()

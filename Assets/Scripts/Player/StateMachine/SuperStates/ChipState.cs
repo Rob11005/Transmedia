@@ -20,6 +20,7 @@ public class ChipState : PlayerState
 
         player.selectHacking.enabled = true;
         player.cursorCanva.SetActive(true);
+        player.cursorCanva.transform.GetChild(1).gameObject.SetActive(false);
 
         player.cinemachineVolume.enabled = true;
         foreach(XrayScanner xrayScanner in player.ScannableObjects.transform.GetComponentsInChildren<XrayScanner>())
@@ -34,7 +35,11 @@ public class ChipState : PlayerState
         base.ExitState();
         Debug.Log("ChipState Exit");
 
-        player.selectHacking.GetComponent<Outline>().enabled = false;
+        if(player.selectHacking.hackedObject != null)
+        {
+            player.selectHacking.hackedObject.GetComponent<Outline>().enabled = false;
+        }
+
         player.selectHacking.enabled = false;
         player.cursorCanva.SetActive(false);
 
@@ -51,7 +56,21 @@ public class ChipState : PlayerState
     public override void FrameUpdate()
     {
         base.FrameUpdate();
-        
+        if(player.selectHacking.hackedObject != null)
+        {
+            if(player.selectHacking.hackedObject.GetComponent<Outline>().enabled == true)
+            {
+                player.canHack = true;
+            }
+            else 
+            {
+                player.canHack = false;
+            }
+        }
+        else 
+        {
+            player.canHack = false;
+        }
 
         #region ExitConditions
         if(player.chip.action.triggered && player.inChip)
@@ -64,6 +83,11 @@ public class ChipState : PlayerState
         {
             playerStateMachine.ChangeState(player.standIdleState);
             player.inChip = false;
+        }
+
+        if(player.interact.action.triggered && player.canHack)
+        {
+            playerStateMachine.ChangeState(player.hackingState);
         }
         #endregion
     }
